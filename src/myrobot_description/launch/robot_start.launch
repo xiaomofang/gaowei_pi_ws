@@ -1,0 +1,9 @@
+<launch>
+        <!-- 启动底盘通讯 -->
+        <include file="$(find ros_arduino_python)/launch/arduino.launch" />
+        <!-- 开启激光雷达 -->
+        <include file="$(find delta_lidar)/launch/delta_lidar.launch" />
+        <!-- 机器人模型加载文件 -->
+        <include file="$(find myrobot_description)/launch/robot_model.launch" />
+</launch>
+

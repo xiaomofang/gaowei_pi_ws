@@ -1,0 +1,15 @@
+<launch>
+    <arg name="model" />
+    <arg name="gui" default="false" />
+
+    <param name="robot_description" command="$(find xacro)/xacro $(find myrobot_description)/xacro/my_robot.xacro" />
+    <param name="use_gui" value="$(arg gui)" />
+
+
+    <!-- Lidar driver -->
+    <include file = "$(find delta_lidar)/launch/delta_lidar.launch" />
+
+
+    <!--cartographer_ros-->
+     <include file = "/home/ubuntu/carto_ws/cartographer_detailed_comments_ws/src/cartographer_ros/cartographer_ros/launch/demo_revo_lds.launch" />
+</launch>

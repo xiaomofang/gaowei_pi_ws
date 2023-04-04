@@ -1,0 +1,150 @@
+<robot name="my_robot_base" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<material name="black">
+		<color rgba="0 0 0 1" />
+	</material>
+
+	<material name="yellow">
+		<color rgba="1 0.4 0 1" />
+	</material>
+
+	<material name="red">
+		<color rgba="1 0 0 1" />
+	</material>
+	<material name="blue">
+		<color rgba="0 0 1 1" />
+	</material>
+
+    <xacro:property name="wheel_mass"   value="1"/>
+    <xacro:property name="wheel_radius" value="0.037"/>
+    <xacro:property name="wheel_length" value="0.02"/>
+    <xacro:property name="M_PI" value="3.1415926"/>
+    <xacro:property name="base_mass" value="5"/> 
+    <xacro:property name="wheel_joint_x" value="0.054"/>
+    <xacro:property name="wheel_joint_y" value="0.1515"/>
+    <xacro:property name="wheel_joint_z" value="0.00"/>
+    <xacro:property name="base_a" value="0.47"/>
+    <xacro:property name="base_b" value="0.374"/>
+    <xacro:property name="base_h" value="0.264"/>
+
+
+    <xacro:macro name="cylinder_inertial_matrix" params="m r h">
+        <inertial>
+            <mass value="${m}" />
+            <inertia ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+                iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+                izz="${m*r*r/2}" /> 
+	</inertial>
+    </xacro:macro>
+
+    <xacro:macro name="box_inertial_matrix" params="m a b h">
+	<inertial>
+            <mass value="${m}" />
+	    <!-- xacro has a terriable issue, it can't calculate h*h, but a*a -->
+	    <inertia ixx="${m*(b*b+0.16*0.16)/12}" ixy="0" ixz="0" 
+		iyy="${m*(0.16*0.16+a*a)/12}" iyz="0" 
+		izz="${m*(a*a+b*b)/12}" />
+	</inertial>
+    </xacro:macro>
+
+
+    <xacro:property name="footprint_radius" value="0.001" />
+    <link name="base_footprint">
+        <visual>
+            <geometry>
+                <sphere radius="${footprint_radius}" />
+            </geometry>
+        </visual>
+    </link>
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="${base_a} ${base_b} ${base_h}"/>
+            </geometry>
+
+            <origin xyz="0 0 0" rpy="0 0 0" />
+
+            <material name="body_color">
+                <color rgba="0 0 0 0.5" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz=" 0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="${base_a} ${base_b} ${base_h}"/>
+            </geometry>
+        </collision>   
+        <box_inertial_matrix  m="${base_mass}" a="${base_a}" b="${base_b}" h="{base_h}" />
+    </link>
+
+
+    <joint name="link2footprint" type="fixed">
+        <parent link="base_footprint"  />
+        <child link="base_link" />
+        <origin xyz="0 0 0.055" rpy="0 0 0" />
+    </joint>
+
+
+    <xacro:macro name="wheel" params="prefix x_reflect y_reflect">
+        <link name="${prefix}_wheel_link">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length = "${wheel_length}"/>
+                </geometry>
+
+                <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+
+                <material name="wheel_color">
+                    <color rgba="1 0 0 0.8" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length = "${wheel_length}"/>
+                </geometry>
+            </collision>
+            <cylinder_inertial_matrix  m="${wheel_mass}" r="${wheel_radius}" h="${wheel_length}" />
+        </link>
+
+
+        <joint name="${prefix}_wheel_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="${prefix}_wheel_link"/>
+            <origin xyz="${x_reflect*wheel_joint_x} ${y_reflect*wheel_joint_y} ${-base_h/2}" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+
+    </xacro:macro>
+
+
+ 
+	
+    <xacro:macro name="cylinder_inertial_matrix" params="m r h">
+        <inertial>
+            <mass value="${m}" />
+            <inertia ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+                iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+                izz="${m*r*r/2}" /> 
+	</inertial>
+    </xacro:macro>
+
+    <xacro:macro name="box_inertial_matrix" params="m a b h">
+        <inertial>
+             <mass value="${m}" />
+	     <!-- xacro has a terriable issue, it can't calculate h*h, but a*a -->
+	     <inertia ixx="${m*(b*b+0.16*0.16)/12}" ixy="0" ixz="0" 
+		 iyy="${m*(0.16*0.16+a*a)/12}" iyz="0" 
+		 izz="${m*(a*a+b*b)/12}" />
+	</inertial>
+    </xacro:macro>
+
+
+        <wheel prefix="left_front"  x_reflect="1" y_reflect="1" />
+        <wheel prefix="right_front" x_reflect="1" y_reflect="-1" />
+        <wheel prefix="left_back"  x_reflect="-1" y_reflect="1" />
+        <wheel prefix="right_back" x_reflect="-1" y_reflect="-1" />
+
+
+
+</robot>
+
