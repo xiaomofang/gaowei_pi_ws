@@ -119,6 +119,35 @@
     <xacro:wheel_func wheel_name="left" flag="1" />
     <xacro:wheel_func wheel_name="right" flag="-1" />
 
+    <xacro:property name="small_wheel_radius" value="0.0075" />
+
+    <xacro:macro name="small_wheel_func" params="small_wheel_name flag">
+        <link name="${small_wheel_name}_wheel">
+            <visual>
+                <geometry>
+                    <sphere radius="${small_wheel_radius}" />
+                </geometry>
+
+                <origin xyz="0 0 0" rpy="0 0 0" />
+
+                <material name="wheel_color">
+                    <color rgba="0 0 0 0.8" />
+                </material>
+            </visual>
+
+        </link>
+
+        <joint name="${small_wheel_name}2link" type="continuous">
+            <parent link="base_link"  />
+            <child link="${small_wheel_name}_wheel" />
+
+            <origin xyz="${0.1 * flag} 0 ${-base_h/2}" rpy="0 0 0" />
+            <axis xyz="0 1 0" />
+        </joint>
+
+    </xacro:macro >
+    <xacro:small_wheel_func small_wheel_name="front" flag="1"/>
+    <xacro:small_wheel_func small_wheel_name="back" flag="-1"/>
 
 </robot>
 
