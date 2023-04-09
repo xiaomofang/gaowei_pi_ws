@@ -3,7 +3,7 @@
     <include file = "$(find delta_lidar)/launch/delta_lidar.launch" />
 
     <!--cartographer_ros-->
-     <include file = "/home/ubuntu/carto_ws/cartographer_detailed_comments_ws/src/cartographer_ros/cartographer_ros/launch/demo_revo_lds.launch" />
+     <include file = "/home/lmf37/carto_ws/cartographer_detailed_comments_ws/src/cartographer_ros/cartographer_ros/launch/demo_revo_lds.launch" />
 
     <!--<node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.12 0.141 0.0 0.0 0.0 /base_link /laser 100" />-->
 </launch>

@@ -75,11 +75,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        camera:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         front_wheel:
           Alpha: 1
           Show Axes: false
@@ -265,6 +260,14 @@ Visualization Manager:
       Topic: /move_base/TrajectoryPlannerROS/local_plan
       Unreliable: false
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: false
+      Marker Topic: /trajectory_node_list
+      Name: trajectory
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -293,7 +296,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 15.735193252563477
+      Distance: 23.30078125
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -308,10 +311,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7053980231285095
+      Pitch: 1.2353978157043457
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.9903979897499084
+      Yaw: 4.488581657409668
     Saved: ~
 Window Geometry:
   Displays:
@@ -330,4 +333,4 @@ Window Geometry:
     collapsed: false
   Width: 1267
   X: 599
-  Y: 107
+  Y: 47

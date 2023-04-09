@@ -2,7 +2,7 @@
 
 source install_isolated/setup.bash
 
-map_dir="${HOME}/gaoweirobot_ws/src/myrobot_navigation/map/carto"
+map_dir="${HOME}/gaowei_pi_ws/src/myrobot_navigation/map/carto"
 map_name="catro"
 
 # 检查文件夹是否存在, 如果不存在就创建文件夹
