@@ -18,6 +18,8 @@
     <include file = "/home/lmf37/carto_ws/cartographer_detailed_comments_ws/src/cartographer_ros/cartographer_ros/launch/demo_revo_lds_localization.launch" /> 
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+        <param name="controller_frequency" value="3.0"/>
+        <param name="controller_patiente" value="15.0"/>
         <rosparam file="$(find myrobot_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
         <rosparam file="$(find myrobot_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
         <rosparam file="$(find myrobot_navigation)/param/local_costmap_params.yaml" command="load" />
