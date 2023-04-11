@@ -8,7 +8,7 @@ global_costmap:
   cost_scaling_factor: 10.0
   static_map: true # 是否使用一个地图或者地图服务器来初始化全局代价地图，如果不使用静态地图，这个参数为false.
 
-  update_frequency: 1.0 #代价地图更新频率,before 1.0
+  update_frequency: 5.0 #代价地图更新频率,before 1.0
   publish_frequency: 0.5 #代价地图的发布频率,before 1.0
   transform_tolerance: 1.0 #等待坐标变换发布信息的超时时间,before 0.5
 

@@ -8,8 +8,8 @@
     <xacro:property name="laser_radius" value="0.03" />
     <xacro:property name="laser_length" value="0.02" />
 
-    <xacro:property name="joint_support_x" value="0" />
-    <xacro:property name="joint_support_y" value="0.12" />
+    <xacro:property name="joint_support_x" value="0.12" />
+    <xacro:property name="joint_support_y" value="0" />
     <xacro:property name="joint_support_z" value="${base_length / 2 + support_length / 2}" />
 
     <xacro:property name="joint_laser_x" value="0" />
@@ -48,7 +48,7 @@
     <joint name="laser2support" type="fixed">
         <parent link="support" />
         <child link="laser"/>
-        <origin xyz="${joint_laser_x} ${joint_laser_y} ${joint_laser_z}" rpy="0 0 0" />
+        <origin xyz="${joint_laser_x} ${joint_laser_y} ${joint_laser_z}" rpy="0 0 -1.57" />
     </joint>
 </robot>
 

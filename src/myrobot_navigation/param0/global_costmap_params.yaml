@@ -4,11 +4,11 @@
 global_frame: map
 
 # The name of the frame for the base link of the robot.(string, default: "base_link")
-robot_base_frame: base_link
+robot_base_frame: base_footprint
 
 # distance a circular robot should be clear of the obstacle (kobuki: 0.18)
 # robot_radius: 0.20  
-footprint: [[0.40, 0.35], [0.40, -0.35], [-0.40, -0.35], [-0.40, 0.35]]  # if the robot is not circular
+footprint: [[0.235, 0.187], [0.235, -0.187], [-0.235, -0.187], [-0.235, 0.187]]  # if the robot is not circular
 
 # used for obstacle_layer, 3D->voxel 2D->other
 map_type: costmap

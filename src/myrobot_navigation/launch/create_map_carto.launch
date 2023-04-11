@@ -1,9 +1,22 @@
 <launch>
+    <arg name="model" />
+    <arg name="gui" default="false" />
+
+    <param name="robot_description" command="$(find xacro)/xacro $(find myrobot_description)/xacro/my_robot.xacro" />
+    <!--  <param name="robot_description" command="$(find xacro)/xacro $(find myrobot_description)/xacro_circle/car.xacro" />-->
+    <param name="use_gui" value="$(arg gui)" />
+
     <!-- Lidar driver -->
     <include file = "$(find delta_lidar)/launch/delta_lidar.launch" />
 
     <!--cartographer_ros-->
+
      <include file = "/home/lmf37/carto_ws/cartographer_detailed_comments_ws/src/cartographer_ros/cartographer_ros/launch/demo_revo_lds.launch" />
 
+
     <!--<node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0.12 0.141 0.0 0.0 0.0 /base_link /laser 100" />-->
+
+    <node pkg="tf" type="static_transform_publisher" name="odom_to_base_footprint" args="0.0 0.0 0.0 0 0 0.0 /odom /base_footprint 1000"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node pkg="robot_state_publisher" name="robot_state_publisher" type="robot_state_publisher" />
 </launch>

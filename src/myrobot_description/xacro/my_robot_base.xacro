@@ -22,8 +22,8 @@
     <xacro:property name="wheel_joint_x" value="0.054"/>
     <xacro:property name="wheel_joint_y" value="0.1515"/>
     <xacro:property name="wheel_joint_z" value="0.00"/>
-    <xacro:property name="base_a" value="0.47"/>
-    <xacro:property name="base_b" value="0.374"/>
+    <xacro:property name="base_a" value="0.374"/>
+    <xacro:property name="base_b" value="0.47"/>
     <xacro:property name="base_h" value="0.264"/>
 
 
