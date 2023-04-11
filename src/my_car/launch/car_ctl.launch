@@ -1,0 +1,8 @@
+<launch>
+
+    <arg name="map_fig" default="/home/lmf37/gaowei_pi_ws/src/myrobot_navigation/map/carto/catro.yaml"/>
+    <node name ="map_server" pkg="map_server" type="map_server" output="screen" respawn="false" args="$(arg map_fig)"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d /home/lmf37/gaowei_pi_ws/src/my_car/rviz/806_map.rviz" required="true"  />
+    <node pkg = "my_car" type="car_ctl" name="car_ctl" output="screen" />
+    
+</launch>

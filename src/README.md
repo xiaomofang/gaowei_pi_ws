@@ -25,7 +25,7 @@
  rosrun map_server map_saver -f map_name
 
 3.定位与路径规划
-##3.1 使用gmapping地图定位与路径规划
+#3.1 使用gmapping地图定位与路径规划
 运行指令:
  roslaunch myrobot_navigation gmap_navigation.launch
 

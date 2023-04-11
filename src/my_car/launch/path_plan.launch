@@ -1,0 +1,19 @@
+<launch>
+
+    <!--<arg name="map_fig" default="/home/lmf37/gaowei_pi_ws/src/myrobot_navigation/map/carto/catro.yaml"/>-->
+    <param name="robot_description" command="$(find xacro)/xacro $(find myrobot_description)/xacro/my_robot.xacro" />
+    <!-- Lidar driver -->
+    <include file = "$(find delta_lidar)/launch/delta_lidar.launch" />
+   
+    <!-- carto localition -->
+    <include file = "/home/lmf37/carto_ws/cartographer_detailed_comments_ws/src/cartographer_ros/cartographer_ros/launch/demo_revo_lds_localization.launch" /> 
+
+    <node name ="map_server" pkg="map_server" type="map_server" output="screen" respawn="false" args="$(arg map_fig)"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d /home/lmf37/gaowei_pi_ws/src/my_car/rviz/806_map.rviz" required="true"  />
+    <node pkg = "my_car" type="path" name="path" output="screen" />
+    <node pkg = "my_car" type="car_ctl" name="car_ctl" output="screen" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node pkg="robot_state_publisher" name="robot_state_publisher" type="robot_state_publisher" />
+
+    
+</launch>
