@@ -1,15 +1,12 @@
 #include "Astar_searcher.h"
 
-
 AstarPathFinder::AstarPathFinder() {
 
     state_index(0) = 96;
     state_index(1) = 54;
     start_index(0) = 96;
     start_index(1) = 54;
-
 }
-
 bool AstarPathFinder::isFind(void) {
 
     if(finding == 1)
@@ -34,17 +31,13 @@ void AstarPathFinder::InitGridMap(const nav_msgs::OccupancyGrid msg) {
 
         GridNodeMap[i] = new GridNodePtr[map_height];
         for(int j = 0; j < map_height; j++){
-
                 Eigen::Vector2i tmpIdx;
                 tmpIdx(0) = i;
                 tmpIdx(1) = j;  
                 GridNodeMap[i][j] = new GridNode(tmpIdx); 
-            
         }
     }
-
     ROS_INFO("init finish!");
-
 }
 
 Eigen::Vector2i  AstarPathFinder::PosToGrid(const Eigen::Vector2f pos) {
@@ -60,8 +53,8 @@ bool AstarPathFinder::isOccupied(const Eigen::Vector2i & index) const{
 #if 1
     std::vector<int> data;
 
-    for(int i = -4; i <= 4; i++)
-        for(int j = -4; j <= 4; j++)
+    for(int i = -8; i <= 8; i++)
+        for(int j = -8; j <= 8; j++)
             data.push_back(int(grid_data.at( (index(1)+i) * map_width + index(0) + j)));
 
     for(auto p : data) {
@@ -141,7 +134,7 @@ void AstarPathFinder::get_state(const geometry_msgs::PoseStamped & state) {
     pose_f(0) = state.pose.position.x;
     pose_f(0) = state.pose.position.y;
 
-    // ROS_INFO("pose: x = %f, y = %f", pose_f(0), pose_f(1));
+    ROS_INFO("pose: x = %f, y = %f", pose_f(0), pose_f(1));
     state_pos = state;
     state_index = PosToGrid(pose_f);
 }

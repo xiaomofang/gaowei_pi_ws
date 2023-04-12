@@ -32,7 +32,6 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
     for(auto p: load_path) {
 
         if(last_point(0) == -500 && last_point(1) == -500) {
-    
         }
         else if(error[0] == -500 && error[1] == -500){
             
@@ -40,16 +39,12 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
             error[1] = p(1) - last_point(1);
         }
         else {
-
-
             if((p(0) - last_point[0]) == error[0] && (p(1) - last_point[1]) == error[1]) {
 
             }
             else {
-
                 error[0] = p(0) - last_point(0);
                 error[1] = p(1) - last_point(1);
-
                 Eigen::Vector2f pose;
                 pose(0) = p[0] * 0.05 - 0.025 - 2.38297;
                 pose(1) = p[1] * 0.05 - 0.025 - 6.43577;
@@ -69,9 +64,7 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
         }
 
         last_point = p;
-
     }
-
     tracking_flag = 1;
     path_size = inflection_point.size();
     ROS_INFO("path_size = %d", path_size);
@@ -79,23 +72,18 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
 }
 
 void Car_Navigation::get_path(const std::vector<Eigen::Vector2i> load_path) {
-
     while (!path.empty()) 
         path.pop();
 
     tracking_progress = 0;
     for(auto p: load_path) {
-
         Eigen::Vector2f pose;
         pose(0) = p[0] * 0.05 - 0.025 - 2.38297;
         pose(1) = p[1] * 0.05 - 0.025 - 6.43577;
         // std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
         path.push(pose);
     }
-
     tracking_flag = 1;
-
-
 }
 
 void Car_Navigation::get_pose(const geometry_msgs::PoseStamped state) {
@@ -104,36 +92,28 @@ void Car_Navigation::get_pose(const geometry_msgs::PoseStamped state) {
     Eigen::Quaterniond current_q(current_pos.pose.orientation.w, current_pos.pose.orientation.x, current_pos.pose.orientation.y, current_pos.pose.orientation.z);
     Eigen::Vector3d Current_Angle_Radian= current_q.matrix().eulerAngles(2,1,0);
     current_yaw = Current_Angle_Radian(0) * 180 / M_PI;
-
-
     if(std::abs(current_yaw - last_yaw) > 45) {
         if(yaw_break) 
             yaw_break = 0;
         else 
             yaw_break = 1;
     }
-
     if(yaw_break) {
         navi_yaw = current_yaw - 180;
     }
     else {
         navi_yaw = current_yaw ;
     }
-
     last_yaw = current_yaw;
-
 }
-
 
 my_car::Speed Car_Navigation::get_speed() {
 
     return car_speed;
 }
-
 float Car_Navigation::speed_calculate(Eigen::Vector2f goal) {
 
     int8_t rotato_speed = 10;
-
     float dx = goal(0) - current_pos.pose.position.x;
     float dy = goal(1) - current_pos.pose.position.y;
    
@@ -230,16 +210,12 @@ float Car_Navigation::speed_calculate(Eigen::Vector2f goal) {
 
 void Car_Navigation::tracking(void) {
 
-
     if(!inflection_point.empty()) {
         
         // Eigen::Vector2f pose = path.front();
         // std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
-
         float distance = speed_calculate(inflection_point.front());
-
         if(distance < DISTANCE_THRESHOLD) {
-
             inflection_point.pop();
             tracking_progress++;
             float progress = float(tracking_progress / path_size);
@@ -248,11 +224,8 @@ void Car_Navigation::tracking(void) {
         }
     }
     else {
-
         tracking_flag = 0;
     }
-
-
 }
 
 

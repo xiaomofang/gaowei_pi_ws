@@ -9,8 +9,8 @@ ros::Subscriber _mode_sub, _speed_sub;
 Serial_Send_Msg * _send_msg = new Serial_Send_Msg();
 
 int Ctl_Mode = HAND_MODE;
-geometry_msgs::Twist  Auto_Speed;
-    geometry_msgs::Twist Hand_speed;
+geometry_msgs::Twist Auto_Speed;
+geometry_msgs::Twist Hand_speed;
 
 int scanKeyboard(void);
 void Speed_Set(int Key_Value);
@@ -20,7 +20,7 @@ void recClickedCallBack(const geometry_msgs::PointStamped::ConstPtr& msg) {
     Ctl_Mode = HAND_MODE;
 }
 
-void recSpeedCallBack(geometry_msgs::Twist msg) {
+void recSpeedCallBack(const geometry_msgs::Twist& msg) {
 
     Auto_Speed.linear=msg.linear;
     Auto_Speed.angular=msg.angular;     
@@ -45,12 +45,14 @@ int main(int argc, char **argv) {
         if(Ctl_Mode == HAND_MODE) {
             Speed_Set(scanKeyboard()); 
             vel_pub.publish(Hand_speed);
-            ROS_INFO("Mode: %d,HAND_MODE", Ctl_Mode);
+            // ROS_INFO("Mode: %d,HAND_MODE", Ctl_Mode);
         }
         else {
 
+            Speed_Set(scanKeyboard()); 
             vel_pub.publish(Auto_Speed);
-            ROS_INFO("Mode: %d,AUTO_MODE", Ctl_Mode);  
+            
+            // ROS_INFO("Mode: %d,AUTO_MODE", Ctl_Mode);  
         }   
         
         ros::spinOnce();
@@ -112,9 +114,11 @@ void  Speed_Set(int Key_Value) {
             break;       
         case KEY_J:
             Ctl_Mode = AUTO_MODE;
+            ROS_INFO("Mode: %d,AUTO_MODE", Ctl_Mode);
             break; 
         case KEY_H:
             Ctl_Mode = HAND_MODE;
+            ROS_INFO("Mode: %d,HAND_MODE", Ctl_Mode);
             break; 
             
     }

@@ -85,13 +85,12 @@ void recStatePosCallBack(const geometry_msgs::PoseStamped & pos) {
 
 }
 
-
-
 int main(int argc, char ** argv) {
 
-    ros::init(argc, argv, "path");
+    ros::init(argc, argv, "path_plan");
 
-    ros::NodeHandle nh("~");
+    // ros::NodeHandle nh("~");
+        ros::NodeHandle nh;
 
     _map_sub   = nh.subscribe("/map", 1, recMapCallBack);  //get map
     _goal_sub  = nh.subscribe("/move_base_simple/goal", 1, recGoalPosCallBack); //2d nav goal

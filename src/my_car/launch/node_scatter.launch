@@ -1,0 +1,39 @@
+<launch>
+
+    <node name="delta_lidar"    pkg="delta_lidar"  type="delta_lidar_node" output="screen">
+    <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
+    <param name="frame_id"            type="string" value="laser"/>
+    </node>
+
+    <param name="/use_sim_time" value="false" />
+
+    <node pkg="robot_state_publisher" name="robot_state_publisher" type="robot_state_publisher" />
+
+    <node name="cartographer_node" pkg="cartographer_ros"
+        type="cartographer_node" args="
+            -configuration_directory $(find cartographer_ros)/configuration_files
+            -configuration_basename revo_lds_localization.lua
+            -load_state_filename /home/lmf37/gaowei_pi_ws/src/myrobot_navigation/map/carto/catro.pbstream"
+        output="screen">
+      <remap from="scan" to="scan" />
+    </node>
+
+    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+        type="cartographer_occupancy_grid_node" args="-resolution 0.05 -pure_localization 1" />
+
+    <param name="robot_description" command="$(find xacro)/xacro $(find myrobot_description)/xacro/my_robot.xacro" />
+ <!-- 
+
+    <include file = "$(find delta_lidar)/launch/delta_lidar.launch" />
+   
+
+    <include file = "/home/lmf37/carto_ws/cartographer_detailed_comments_ws/src/cartographer_ros/cartographer_ros/launch/demo_revo_lds_localization.launch" />
+-->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d /home/lmf37/gaowei_pi_ws/src/my_car/rviz/806_map.rviz" required="true"  />
+    <arg name="map_fig" default="/home/lmf37/gaowei_pi_ws/src/myrobot_navigation/map/carto/catro.yaml"/>
+    <node name ="map_server" pkg="map_server" type="map_server" output="screen" respawn="false" args="$(arg map_fig)"/>
+    <node pkg = "my_car" type="path_plan" name="path_plan" output="screen" />
+    <node pkg = "my_car" type="car_ctl" name="car_ctl" output="screen" />
+    <node pkg="joint_state_publisher" name="joint_state_publisher" type="joint_state_publisher" />
+    
+</launch>

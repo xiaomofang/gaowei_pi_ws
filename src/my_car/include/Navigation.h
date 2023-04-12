@@ -28,7 +28,7 @@ private:
 
 
 public:
-    Car_Navigation(/* args */);
+     Car_Navigation(/* args */);
     ~Car_Navigation();
 
     void get_path(const std::vector<Eigen::Vector2i> load_path);
@@ -41,11 +41,6 @@ public:
     void tracking(void);
 
 };
-
-
-
-
-
 
 
 
