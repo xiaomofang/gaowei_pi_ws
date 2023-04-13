@@ -5,7 +5,7 @@
 #include <Eigen/Eigen>
 #include <geometry_msgs/PoseStamped.h>
 #include <queue>
-#include "my_car/Speed.h"
+#include <geometry_msgs/Twist.h>
 
 #define DISTANCE_THRESHOLD 0.15f
 #define BASE_SPEED 10
@@ -19,7 +19,8 @@ private:
     std::queue<Eigen::Vector2f> inflection_point;
 
     geometry_msgs::PoseStamped current_pos;
-    my_car::Speed car_speed;
+    geometry_msgs::Twist  Car_speed;
+    // my_car::Speed car_speed;
     int tracking_flag = 0;
     int path_size;
     int tracking_progress;
@@ -34,7 +35,7 @@ public:
     void get_path(const std::vector<Eigen::Vector2i> load_path);
     void get_inflection_point(const std::vector<Eigen::Vector2i> load_path);
     void get_pose(const geometry_msgs::PoseStamped state);
-    my_car::Speed get_speed();
+    geometry_msgs::Twist get_speed();
 
     float speed_calculate(Eigen::Vector2f goal);
     bool is_tracking();

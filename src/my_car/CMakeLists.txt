@@ -43,7 +43,7 @@ include_directories(include ${OpenCV_INCLUDE_DIRS})
 add_executable(path_plan src/path.cpp 
                     src/Astar_searcher.cpp
                     src/Navigation.cpp)
-target_link_libraries(path_plan ${catkin_LIBRARIES})
+target_link_libraries(path_plan ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 add_executable(car_ctl src/Car_Ctl.cpp
                        src/Serial_Send.cpp)

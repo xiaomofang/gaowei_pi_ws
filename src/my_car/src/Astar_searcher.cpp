@@ -53,8 +53,8 @@ bool AstarPathFinder::isOccupied(const Eigen::Vector2i & index) const{
 #if 1
     std::vector<int> data;
 
-    for(int i = -8; i <= 8; i++)
-        for(int j = -8; j <= 8; j++)
+    for(int i = -4; i <= 4; i++)
+        for(int j = -4; j <= 4; j++)
             data.push_back(int(grid_data.at( (index(1)+i) * map_width + index(0) + j)));
 
     for(auto p : data) {
@@ -134,7 +134,7 @@ void AstarPathFinder::get_state(const geometry_msgs::PoseStamped & state) {
     pose_f(0) = state.pose.position.x;
     pose_f(0) = state.pose.position.y;
 
-    ROS_INFO("pose: x = %f, y = %f", pose_f(0), pose_f(1));
+    // ROS_INFO("pose: x = %f, y = %f", pose_f(0), pose_f(1));
     state_pos = state;
     state_index = PosToGrid(pose_f);
 }

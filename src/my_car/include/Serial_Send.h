@@ -26,6 +26,7 @@
 #define KEY_X 120
 #define KEY_H 104
 #define KEY_J 106
+#define KEY_Esc 27
 
 class Serial_Send_Msg
 {

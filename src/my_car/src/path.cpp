@@ -45,8 +45,7 @@ void visualization(std::vector<Eigen::Vector2i> path) {
         p.y = obstacle.y;
         p.z = obstacle.z; 
         path_line.points.push_back(p);
-    }
-    
+    } 
 }
 
 void recMapCallBack(const nav_msgs::OccupancyGrid msg ) {   
@@ -62,13 +61,11 @@ void recGoalPosCallBack(const geometry_msgs::PoseStampedConstPtr & goal){
     if(!_car_navigation->is_tracking()) {
         if(!_astar_path_finder->isFind()) {
             if(_astar_path_finder->get_goal(goal)) {
-
                 _astar_path_finder->AstarGraphSearch();
                 _astar_path_finder->path = _astar_path_finder->get_path();
                 // _car_navigation->get_path(_astar_path_finder->path);
                 _car_navigation->get_inflection_point(_astar_path_finder->path);
                 visualization(_astar_path_finder->path);
-
             }
         }
     }
@@ -100,7 +97,8 @@ int main(int argc, char ** argv) {
     _visual_pub = nh.advertise<nav_msgs::GridCells>("/path", 1);
     //_speed_pub  = nh.advertise<my_car::Speed>("/car_speed",4);
     _speed_pub = nh.advertise<geometry_msgs::Twist>("/my_cmd_vel", 50);
-    my_car::Speed send_speed;
+    // my_car::Speed send_speed;
+    geometry_msgs::Twist  send_speed;
     path_vis_setting();
     geometry_msgs::Twist  cmd_vel;
     geometry_msgs::Vector3 linear;
@@ -115,19 +113,26 @@ int main(int argc, char ** argv) {
             send_speed = _car_navigation->get_speed();
         }
         else {
-            send_speed.speed_0 = 0;
-            send_speed.speed_1 = 0;
-            send_speed.speed_2 = 0;
-            send_speed.speed_3 = 0;
+            send_speed.linear.x = 0;
+            send_speed.linear.y = 0;
+            send_speed.linear.z = 0;
+            send_speed.angular.x = 0;
+            send_speed.angular.y = 0;
+            send_speed.angular.z = 0;
+
         }
-        linear.x = (send_speed.speed_0+send_speed.speed_3)/2;
-        linear.y = 0.0;
-        linear.z = 0.0;
-        angular.x = 0.0;
-        angular.y = 0.0;
-        angular.z = ((send_speed.speed_3-send_speed.speed_0)/(2*36));
-        cmd_vel.linear=linear;
-        cmd_vel.angular=angular;     
+        // linear.x = (float)(send_speed.speed_0+send_speed.speed_3)/200.0;
+        // linear.y = 0.0;
+        // linear.z = 0.0;
+        // angular.x = 0.0;
+        // angular.y = 0.0;
+        // angular.z = (float)((send_speed.speed_3-send_speed.speed_0)/(float)(2*36.0));
+        // cmd_vel.linear=linear;
+        // cmd_vel.angular=angular; 
+         cmd_vel.linear=send_speed.linear;
+         cmd_vel.angular=send_speed.angular; 
+        //  std::cout << " speed_0： " << (float)send_speed.speed_0<< "  speed_3: " <<  (float)send_speed.speed_3 << std::endl;
+        std::cout << " cmd_vel.linear.x,y,z: " <<  cmd_vel.linear.x<< " ," <<   cmd_vel.linear.y<< " ,"  <<   cmd_vel.linear.z << " ,"<<  "cmd_vel.angular.x,y,z:" <<   cmd_vel.angular.x<< " ," <<   cmd_vel.angular.y<< " ,"  <<   cmd_vel.angular.z << std::endl;    
         _speed_pub.publish(cmd_vel);
         _visual_pub.publish(path_vis);
         _marker_pub.publish(path_line);

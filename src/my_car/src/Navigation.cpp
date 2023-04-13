@@ -1,6 +1,7 @@
 #include "Navigation.h"
-
-
+#include "Serial_Send.h"
+#include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/Twist.h>
 Car_Navigation::Car_Navigation(/* args */)
 {
 
@@ -48,7 +49,7 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
                 Eigen::Vector2f pose;
                 pose(0) = p[0] * 0.05 - 0.025 - 2.38297;
                 pose(1) = p[1] * 0.05 - 0.025 - 6.43577;
-                std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
+                // std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
                 inflection_point.push(pose);
             }
         }
@@ -59,7 +60,7 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
             Eigen::Vector2f pose;
             pose(0) = p[0] * 0.05 - 0.025 - 2.38297;
             pose(1) = p[1] * 0.05 - 0.025 - 6.43577;
-            std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
+            // std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
             inflection_point.push(pose);
         }
 
@@ -107,13 +108,18 @@ void Car_Navigation::get_pose(const geometry_msgs::PoseStamped state) {
     last_yaw = current_yaw;
 }
 
-my_car::Speed Car_Navigation::get_speed() {
-
-    return car_speed;
+// geometry_msgs::Twist  Car_speed;
+geometry_msgs::Twist Car_Navigation::get_speed() {
+    return Car_speed;
 }
 float Car_Navigation::speed_calculate(Eigen::Vector2f goal) {
 
-    int8_t rotato_speed = 10;
+    float   linear_speed=0.05 ;
+    float   angular_speed=0.05;
+    Car_speed.linear.y=0.0;
+    Car_speed.linear.z=0.0;
+    Car_speed.angular.x=0.0;
+    Car_speed.angular.y=0.0;
     float dx = goal(0) - current_pos.pose.position.x;
     float dy = goal(1) - current_pos.pose.position.y;
    
@@ -139,69 +145,51 @@ float Car_Navigation::speed_calculate(Eigen::Vector2f goal) {
     int abs_error_angle = std::abs(error_angle);
 
     if(abs_error_angle >= 45) {
-        
-        car_speed.speed_0 = rotato_speed;
-        car_speed.speed_1 = rotato_speed;
-        car_speed.speed_2 = -rotato_speed;
-        car_speed.speed_3 = -rotato_speed;
-
+        Car_speed.linear.x=linear_speed/2;
+        Car_speed.angular.z=2*angular_speed;
     }
     else if(abs_error_angle < 45 && abs_error_angle >= 10){
 
         if(point_angle <= 135 && point_angle >= -135) {
             if(navi_yaw >= point_angle) {
-                car_speed.speed_0 = rotato_speed;
-                car_speed.speed_1 = rotato_speed;
-                car_speed.speed_2 = rotato_speed-5;
-                car_speed.speed_3 = rotato_speed-5;
+                Car_speed.linear.x=linear_speed;
+                Car_speed.angular.z=angular_speed;
             }
             else {
-                car_speed.speed_0 = rotato_speed-5;
-                car_speed.speed_1 = rotato_speed-5;
-                car_speed.speed_2 = rotato_speed;
-                car_speed.speed_3 = rotato_speed;
+                Car_speed.linear.x=linear_speed;
+                Car_speed.angular.z=-angular_speed;
             }
         }
         else if(point_angle > 135 && point_angle <= 180) {
             
             if(navi_yaw >= point_angle || (navi_yaw < point_angle && navi_yaw <= 0)) {
-                car_speed.speed_0 = rotato_speed;
-                car_speed.speed_1 = rotato_speed;
-                car_speed.speed_2 = rotato_speed-5;
-                car_speed.speed_3 = rotato_speed-5;
+                Car_speed.linear.x=linear_speed;
+                Car_speed.angular.z=angular_speed;
             }
             else {
-                car_speed.speed_0 = rotato_speed-5;
-                car_speed.speed_1 = rotato_speed-5;
-                car_speed.speed_2 = rotato_speed;
-                car_speed.speed_3 = rotato_speed;                
+                Car_speed.linear.x=linear_speed;
+                Car_speed.angular.z=-angular_speed;               
             }
         }
         else {
 
             if(navi_yaw <= point_angle || (navi_yaw > point_angle && navi_yaw > 0)) {
                 
-                car_speed.speed_0 = rotato_speed-5;
-                car_speed.speed_1 = rotato_speed-5;
-                car_speed.speed_2 = rotato_speed;
-                car_speed.speed_3 = rotato_speed;  
+                Car_speed.linear.x=linear_speed;
+                Car_speed.angular.z=-angular_speed;
             }
             else {
-                car_speed.speed_0 = rotato_speed-5;
-                car_speed.speed_1 = rotato_speed-5;
-                car_speed.speed_2 = rotato_speed;
-                car_speed.speed_3 = rotato_speed;
+                Car_speed.linear.x=linear_speed;
+                Car_speed.angular.z=angular_speed;
             }
-
         }
 
     }
     else {
-            car_speed.speed_0 = rotato_speed;
-            car_speed.speed_1 = rotato_speed;
-            car_speed.speed_2 = rotato_speed;
-            car_speed.speed_3 = rotato_speed;
+                Car_speed.linear.x=2*linear_speed;
+                Car_speed.angular.z=0;
     }
+    // std::cout << " speed_0： " << (float)car_speed.speed_0<< "  speed_3: " <<  (float)car_speed.speed_3 << std::endl;
 
     return  distance;
 

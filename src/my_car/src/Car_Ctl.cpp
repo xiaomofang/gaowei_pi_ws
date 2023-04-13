@@ -1,7 +1,7 @@
 #include "Serial_Send.h"
 #include <geometry_msgs/PointStamped.h>
-#include "my_car/Speed.h"
 #include <geometry_msgs/Twist.h>
+#include "std_msgs/Bool.h"
 #define AUTO_MODE 1
 #define HAND_MODE 0
 
@@ -11,7 +11,7 @@ Serial_Send_Msg * _send_msg = new Serial_Send_Msg();
 int Ctl_Mode = HAND_MODE;
 geometry_msgs::Twist Auto_Speed;
 geometry_msgs::Twist Hand_speed;
-
+std_msgs::Bool  End_Ros;
 int scanKeyboard(void);
 void Speed_Set(int Key_Value);
 
@@ -27,13 +27,15 @@ void recSpeedCallBack(const geometry_msgs::Twist& msg) {
 }
 
 int main(int argc, char **argv) {
+    End_Ros.data=false;//
 
     ros::init(argc, argv, "car_ctl");
     ros::NodeHandle nh;
     ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 50);
+    ros::Publisher end_ros_pub = nh.advertise<std_msgs::Bool>("/end_ROS", 50);
 
     _mode_sub = nh.subscribe("/clicked_point", 1, recClickedCallBack); 
-    // _speed_sub = nh.subscribe("/car_speed", 4, recSpeedCallBack);
+    //  _speed_sub = nh.subscribe("/car_speed", 4, recSpeedCallBack);
     _speed_sub = nh.subscribe("/my_cmd_vel", 1, recSpeedCallBack);
     
 
@@ -51,9 +53,11 @@ int main(int argc, char **argv) {
 
             Speed_Set(scanKeyboard()); 
             vel_pub.publish(Auto_Speed);
+             ROS_INFO("Mode:Auto_Speed.linear,Auto_Speed.angular.z,%f,%f", Auto_Speed.linear.x,Auto_Speed.angular.z);  
             
             // ROS_INFO("Mode: %d,AUTO_MODE", Ctl_Mode);  
         }   
+        vel_pub.publish(End_Ros);//关闭ROS 
         
         ros::spinOnce();
         loop_rate.sleep();
@@ -102,7 +106,7 @@ void  Speed_Set(int Key_Value) {
             break;
         case KEY_E:
             linear.x =0;
-            angular.z =set_speed_angular-0.03;            
+            angular.z =set_speed_angular+0.03;            
             break;     
         case KEY_C:
             linear.x =0;
@@ -120,6 +124,11 @@ void  Speed_Set(int Key_Value) {
             Ctl_Mode = HAND_MODE;
             ROS_INFO("Mode: %d,HAND_MODE", Ctl_Mode);
             break; 
+        case KEY_Esc:
+            End_Ros.data=true;
+            ROS_INFO("-------------关闭ROS!!!-----------------------");
+            break;  
+           
             
     }
 
