@@ -35,8 +35,8 @@ void visualization(std::vector<Eigen::Vector2i> path) {
           
         geometry_msgs::Point obstacle; 
            
-        obstacle.x = ptr[0] * 0.05 - 0.025 - 2.38297;
-        obstacle.y = ptr[1] * 0.05 - 0.025 - 6.43577;
+        obstacle.x = ptr[0] * 0.05 - 0.025 - 5.46916;
+        obstacle.y = ptr[1] * 0.05 - 0.025 - 4.84707;
         obstacle.z = 0;
         path_vis.cells.push_back(obstacle);
 
@@ -132,7 +132,7 @@ int main(int argc, char ** argv) {
          cmd_vel.linear=send_speed.linear;
          cmd_vel.angular=send_speed.angular; 
         //  std::cout << " speed_0： " << (float)send_speed.speed_0<< "  speed_3: " <<  (float)send_speed.speed_3 << std::endl;
-        std::cout << " cmd_vel.linear.x,y,z: " <<  cmd_vel.linear.x<< " ," <<   cmd_vel.linear.y<< " ,"  <<   cmd_vel.linear.z << " ,"<<  "cmd_vel.angular.x,y,z:" <<   cmd_vel.angular.x<< " ," <<   cmd_vel.angular.y<< " ,"  <<   cmd_vel.angular.z << std::endl;    
+        // std::cout << " cmd_vel.linear.x,y,z: " <<  cmd_vel.linear.x<< " ," <<   cmd_vel.linear.y<< " ,"  <<   cmd_vel.linear.z << " ,"<<  "cmd_vel.angular.x,y,z:" <<   cmd_vel.angular.x<< " ," <<   cmd_vel.angular.y<< " ,"  <<   cmd_vel.angular.z << std::endl;    
         _speed_pub.publish(cmd_vel);
         _visual_pub.publish(path_vis);
         _marker_pub.publish(path_line);

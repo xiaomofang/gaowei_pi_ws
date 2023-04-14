@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source install_isolated/setup.bash
+#source install_isolated/setup.bash
 
 map_dir="${HOME}/gaowei_pi_ws/src/myrobot_navigation/map/carto"
 map_name="catro"

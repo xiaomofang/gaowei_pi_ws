@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
             
             // ROS_INFO("Mode: %d,AUTO_MODE", Ctl_Mode);  
         }   
-        vel_pub.publish(End_Ros);//关闭ROS 
+        end_ros_pub.publish(End_Ros);//关闭ROS 
         
         ros::spinOnce();
         loop_rate.sleep();
@@ -126,7 +126,7 @@ void  Speed_Set(int Key_Value) {
             break; 
         case KEY_Esc:
             End_Ros.data=true;
-            ROS_INFO("-------------关闭ROS!!!-----------------------");
+            ROS_INFO("-------------Close ROS!!!-----------------------");
             break;  
            
             

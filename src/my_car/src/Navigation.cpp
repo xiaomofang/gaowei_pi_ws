@@ -47,9 +47,9 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
                 error[0] = p(0) - last_point(0);
                 error[1] = p(1) - last_point(1);
                 Eigen::Vector2f pose;
-                pose(0) = p[0] * 0.05 - 0.025 - 2.38297;
-                pose(1) = p[1] * 0.05 - 0.025 - 6.43577;
-                // std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
+                pose(0) = p[0] * 0.05 - 0.025 - 5.46916;
+                pose(1) = p[1] * 0.05 - 0.025 -4.84707;
+                std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
                 inflection_point.push(pose);
             }
         }
@@ -58,9 +58,9 @@ void Car_Navigation::get_inflection_point(const std::vector<Eigen::Vector2i> loa
         if(n == size) {
 
             Eigen::Vector2f pose;
-            pose(0) = p[0] * 0.05 - 0.025 - 2.38297;
-            pose(1) = p[1] * 0.05 - 0.025 - 6.43577;
-            // std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
+            pose(0) = p[0] * 0.05 - 0.025 - 5.46916;
+            pose(1) = p[1] * 0.05 - 0.025 -4.84707;
+            std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
             inflection_point.push(pose);
         }
 
@@ -79,9 +79,9 @@ void Car_Navigation::get_path(const std::vector<Eigen::Vector2i> load_path) {
     tracking_progress = 0;
     for(auto p: load_path) {
         Eigen::Vector2f pose;
-        pose(0) = p[0] * 0.05 - 0.025 - 2.38297;
-        pose(1) = p[1] * 0.05 - 0.025 - 6.43577;
-        // std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
+        pose(0) = p[0] * 0.05 - 0.025 - 5.46916;
+        pose(1) = p[1] * 0.05 - 0.025 -4.84707;
+        std::cout << "pose: x = " << pose(0) << " y = " << pose(1) <<std::endl;
         path.push(pose);
     }
     tracking_flag = 1;
